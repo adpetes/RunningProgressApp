@@ -1,0 +1,19 @@
+.react-calendar {
+    width: fit-content
+}
+
+.react-calendar__tile {
+    height: 100px
+}
+
+.react-calendar__tile--active {
+    background: white
+  }
+
+.react-calendar__month-view__days__day {
+    color: grey;
+}
+
+.react-calendar__navigation__label {
+  pointer-events: none;
+}
