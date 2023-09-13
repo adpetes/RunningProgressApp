@@ -48,11 +48,12 @@ export async function getStravaAccessToken() {
             "headers": headers,
             "body": body
         }
-        const response = makeRequest(address, request)
+        const response = await makeRequest(address, request)
+        if (!response.ok) throw new Error("Error retrieving access token")
         return response
     } 
-    catch (error) {
-        throw new Error("Error retrieving access token", error)
+    catch (e) {
+        throw e
     }
 }
 
@@ -68,13 +69,14 @@ export async function getStravaStats(token) {
     }
     try {
         const res = await makeRequest(address, request)
+        if (!res.ok) throw new Error("Error retrieving athlete stats")
         return res
     } 
     catch (e) { // Try refreshing token and resending request if error
         try {
             return refreshAndRetryRequest(address, request)
-        } catch (e2) {
-            throw new Error("Error retrieving athlete stats", e2)
+        } catch (e) {
+            throw e
         }
     }
 }
@@ -93,13 +95,14 @@ export async function getStravaAllActivites(token) {
     }
     try { // Try refreshing token and resending request if error
         const res = await makeRequest(address, request)
+        if (!res.ok) throw new Error("Error retrieving all activities")
         return res
     } 
     catch (e) {
         try {
             return refreshAndRetryRequest(address, request)
         } catch (e2) {
-            throw new Error("Error retrieving all activities", e2)
+            throw e
         }
     }
 }
@@ -135,6 +138,7 @@ export async function getStravaDetailedActivity(id, token) {
     }
     try {
         const res = await makeRequest(address, request)
+        if (!res.ok) throw new Error(`Error retrieving detailed activity: ${id}`)
         return res
     } 
     catch (e) { // Try refreshing token and resending request if error
@@ -142,7 +146,7 @@ export async function getStravaDetailedActivity(id, token) {
             console.log("old token!", token)
             return refreshAndRetryRequest(address, request)
         } catch (e2) {
-            throw new Error(`Error retrieving detailed activity: ${id}`, e2)
+            throw e
         }
     }
 }
