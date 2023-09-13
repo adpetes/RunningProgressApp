@@ -1,5 +1,4 @@
-import React, { useEffect } from 'react'
-import { Link } from 'react-scroll';
+import React from 'react'
 import { MdOpenInNew } from 'react-icons/md';
 import { secondsToHMS } from '../../util';
 

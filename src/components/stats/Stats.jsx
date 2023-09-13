@@ -42,7 +42,7 @@ function Stats(props) {
     if (allActivities) {
       getBestEfforts()
     }
-  }, [allActivities])
+  }, [allActivities, accessToken])
 
   const getDistance = () => athleteStats ? athleteStats.distance / 1000 + "km" : "-"
   const getElevation = () => athleteStats ? athleteStats.elevation_gain + "m" : "-"

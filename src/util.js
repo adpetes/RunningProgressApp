@@ -1,4 +1,4 @@
-import { getStravaAllActivites, getStravaDetailedActivity } from "./service";
+import { getStravaDetailedActivity } from "./service";
 
 export const raceNameConversions = {
     "Marathon": "marathon",
@@ -66,7 +66,7 @@ export async function mayGetBestEffort(activity, detailedBestEfforts, accessToke
         const bestEfforts = detailedActivity.best_efforts.filter((be) => effortNames.includes(be.name) && (be.pr_rank === 1 || be.pr_rank === null))
         bestEfforts.forEach((bestEffort) => {
             const raceType = raceNameConversions[bestEffort.name]
-            if (bestEffort.name == "Half-Marathon") {
+            if (bestEffort.name === "Half-Marathon") {
                 detailedBestEfforts[raceType] = detailedActivity
             }
             else if (bestEffort.pr_rank === 1 && !(raceType in detailedBestEfforts)){
