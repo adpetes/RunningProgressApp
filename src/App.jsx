@@ -1,7 +1,7 @@
 import './index.css'
 import Navbar from './components/Navbar';
 import Home from './components/Home';
-import Stats from './components/Stats';
+import Stats from './components/stats/Stats';
 import Gallery from './components/Gallery';
 import Schedule from './components/calendar/Schedule';
 import { useEffect, useState } from 'react';

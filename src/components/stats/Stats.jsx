@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from 'react'
-import marathon from '../images/marathon.png'
-import halfmara from '../images/halfmara.png'
-import tenk from '../images/tenk.png'
-import fivek from '../images/fivek.png'
-import onemile from '../images/onemile.png'
-import height from '../images/height.png'
-import weight from '../images/weight.png'
-import distance from '../images/distance.png'
-import elevation from '../images/elevation.png'
-import time from '../images/time.png'
-import mileage from '../images/mileage.png'
-import { weeksBetweenDates, secondsToHMS, mayGetBestEffort } from '../util'
+import marathon from '../../images/marathon.png'
+import halfmara from '../../images/halfmara.png'
+import tenk from '../../images/tenk.png'
+import fivek from '../../images/fivek.png'
+import onemile from '../../images/onemile.png'
+import height from '../../images/height.png'
+import weight from '../../images/weight.png'
+import distance from '../../images/distance.png'
+import elevation from '../../images/elevation.png'
+import time from '../../images/time.png'
+import mileage from '../../images/mileage.png'
+import { weeksBetweenDates, secondsToHMS, mayGetBestEffort } from '../../util'
 import BestEffortCard from './BestEffortCard'
 import StatCard from './StatCard'
 
@@ -20,14 +20,13 @@ function Stats(props) {
   const [bestEfforts, setBestEfforts] = useState({})
 
   useEffect(() => {
+    // Find all "best effort" runs aka personal record times for given distances
     async function getBestEfforts() {
-      // && (activity.id === 9030151517 || activity.id === 8891325318)
-      const prs = allActivities.filter((activity) => activity.pr_count > 0)
+      const prs = allActivities.filter((activity) => activity.pr_count > 0) // Activities that contain PRs
       const detailedBestEfforts = {}
       try {
         for (const pr of prs) {
           await mayGetBestEffort(pr, detailedBestEfforts, accessToken)
-          // break
           if (Object.keys(detailedBestEfforts).length === 4) {
             break
           }
@@ -45,11 +44,11 @@ function Stats(props) {
     }
   }, [allActivities])
 
-  const getDistance = () => athleteStats ? athleteStats.distance / 1000 + "km" : "..."
-  const getElevation = () => athleteStats ? athleteStats.elevation_gain + "m" : "..."
-  // const getNumRuns = () => athleteStats ? athleteStats.count : "..."
-  const getMovingTime = () => athleteStats ? secondsToHMS(athleteStats.moving_time) : "..."
-  const getWeeklyMilage = () => athleteStats ? (athleteStats.distance / 1000 / weeksBetweenDates('2023-03-31')).toFixed(2) + "km": "..."
+  const getDistance = () => athleteStats ? athleteStats.distance / 1000 + "km" : "-"
+  const getElevation = () => athleteStats ? athleteStats.elevation_gain + "m" : "-"
+  // const getNumRuns = () => athleteStats ? athleteStats.count : "-"
+  const getMovingTime = () => athleteStats ? secondsToHMS(athleteStats.moving_time) : "-"
+  const getWeeklyMilage = () => athleteStats ? (athleteStats.distance / 1000 / weeksBetweenDates('2023-03-31')).toFixed(2) + "km": "-"
 
   return (
       <div name='stats' className='bg-[#426a5e] h-screen w-full'>

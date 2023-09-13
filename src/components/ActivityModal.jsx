@@ -9,7 +9,8 @@ import { secondsToHMS, timeAndDistanceToPace } from '../util';
 function ActivityModal(props) {
     const { modalVisible, handleModalClose, contents } = props
 
-    const getCords = () => decode(contents.map.polyline)
+    // Convert polyline encoded string to displayable coordinates
+    const getCords = () => decode(contents.map.polyline) 
     
     // Get the most north-eastern and south-western points of the route to configure bounds
     const getBounds = () => {
@@ -37,10 +38,10 @@ function ActivityModal(props) {
                 keyboard={true} 
                 >
                 <Modal.Header closeButton>
-                    <Modal.Title><p className='text-sm m-0'>{" " + contents.start_date_local.slice(0,10) + " " + contents.start_date_local.slice(11,19)}</p><p className='font-bold mb-1'>{contents.name}</p></Modal.Title>
+                    {contents && <Modal.Title><p className='text-sm m-0'>{" " + contents.start_date_local.slice(0,10) + " " + contents.start_date_local.slice(11,19)}</p><p className='font-bold mb-1'>{contents.name}</p></Modal.Title>}
                 </Modal.Header>
                 <Modal.Body>
-                    <div className='w-full h-[600px] bg-white rounded-lg'>
+                    {contents ? <div className='w-full h-[600px] bg-white rounded-lg'>
                         <div className='w-full h-[450px] bg-white'>
                             {contents.map.polyline ? <MapContainer 
                                 style={{ height: "100%", width: "100%" }} 
@@ -76,7 +77,7 @@ function ActivityModal(props) {
                                 <p className='m-0 font-bold'>{contents.average_heartrate ? contents.average_heartrate.toFixed(0) + "bpm" : "-"}</p>
                             </div>
                         </div>
-                    </div>
+                    </div> : <h1> Error retrieving activity details. Try refreshing the page!</h1>}
                 </Modal.Body>
             </Modal>
         </div>

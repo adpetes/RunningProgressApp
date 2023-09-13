@@ -42,7 +42,7 @@ const Navbar = () => {
         {!nav ? <FaBars/> : <FaTimes/>} 
       </div>
 
-      {/* mob menu */}
+      {/* mobile (small mode) menu */}
       <div>
         <ul className={!nav ? 'hidden' : 'absolute top-0 left-0 w-full h-screen bg-[#243E36] flex flex-col justify-center items-center'}>
           <li className="py-4 text-4xl"> 

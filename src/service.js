@@ -1,18 +1,23 @@
 import {curTimeEpoch} from "./util"
 
 async function makeRequest(address, request) {
-    const response = await fetch(address, request)
-    return response
+    try {
+        const response = await fetch(address, request)
+        return response
+    } catch (error) {
+        throw error
+    }
 }
 
 async function refreshAndRetryRequest(address, request) {
     try {
         const tokenRes = getStravaAccessToken()
         const freshToken = await tokenRes.json()
+        console.log("Retrying that with fresh token!", address, freshToken)
         const newRequest = {
-            ...request, // Spread the properties of the original request object
+            ...request, // Spread the properties of the original request 
             headers: {
-                ...request.headers, // Spread the original headers object
+                ...request.headers,
                 authorization: `Bearer ${freshToken}` // Replace the token with freshToken
             }
         }
@@ -65,7 +70,7 @@ export async function getStravaStats(token) {
         const res = await makeRequest(address, request)
         return res
     } 
-    catch (e) {
+    catch (e) { // Try refreshing token and resending request if error
         try {
             return refreshAndRetryRequest(address, request)
         } catch (e2) {
@@ -86,7 +91,7 @@ export async function getStravaAllActivites(token) {
             'before' : time
         }
     }
-    try {
+    try { // Try refreshing token and resending request if error
         const res = await makeRequest(address, request)
         return res
     } 
@@ -94,7 +99,7 @@ export async function getStravaAllActivites(token) {
         try {
             return refreshAndRetryRequest(address, request)
         } catch (e2) {
-            throw new Error("Error retrieving athlete stats", e2)
+            throw new Error("Error retrieving all activities", e2)
         }
     }
 }
@@ -132,11 +137,12 @@ export async function getStravaDetailedActivity(id, token) {
         const res = await makeRequest(address, request)
         return res
     } 
-    catch (e) {
+    catch (e) { // Try refreshing token and resending request if error
         try {
+            console.log("old token!", token)
             return refreshAndRetryRequest(address, request)
         } catch (e2) {
-            throw new Error("Error retrieving athlete stats", e2)
+            throw new Error(`Error retrieving detailed activity: ${id}`, e2)
         }
     }
 }

@@ -1,21 +1,16 @@
 import React, { useEffect } from 'react'
-import { timeAndDistanceToPace } from '../../util'
-import logo from '../../images/logo.png'
 import { getStravaDetailedActivity } from '../../service'
 
 function Tile(props) {
     const { activity, date, handleModalVisible, setModalContents, accessToken } = props
-    // useEffect(() => {
-    //         if (activity){
-    //             console.log(activity)
-    //         }
-    //     }, [activity])
     
     const handleTileClick = async () => {
+        // Get detailed activity associated with clicked tile, display detailed activity in modal
         try {
             const detailedRes = await getStravaDetailedActivity(activity.id, accessToken)
             const detailed = await detailedRes.json()
 
+            console.log("got detailed activity!", detailed)
             setModalContents(detailed)
             handleModalVisible()
         } catch (error) {
@@ -35,7 +30,7 @@ function Tile(props) {
                 return "black"
         }
     }
-    const getWorkoutType = () => {
+    const getWorkoutType = () => { // Determine workout-type by activity title
         if (activity.name.toLowerCase().includes("easy")) {
             return "E"
         }
@@ -54,10 +49,10 @@ function Tile(props) {
         }
         else {
             if (new Date(date) > new Date()) {
-                return ""
+                return "" // No activity on future date - display nothing
             }
             else {
-                return "Rest"
+                return "Rest" // No activity on a past date = rest day!
             }
         }
     }

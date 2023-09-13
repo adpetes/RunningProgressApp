@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import Calendar from 'react-calendar'
 import 'react-calendar/dist/Calendar.css';
 import './calendar.css'
-import logo from '../../images/logo.png';
 import Tile from './Tile';
 
 function Schedule(props) {
@@ -15,6 +14,7 @@ function Schedule(props) {
     }
 
     const tileContent = ({ date }) => {
+        // Find activity corresponding to 'date'
         const activity = allActivities.filter(activity => {
             const activityDate = new Date(activity.start_date_local)
             const calendarDate = new Date(date)

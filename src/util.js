@@ -8,6 +8,7 @@ export const raceNameConversions = {
     "1 mile": "onemile",
 }
 
+// Convert seconds (integer) to hr : min : sec format
 export function secondsToHMS(seconds) {
     const hours = Math.floor(seconds / 3600);
     const minutes = Math.floor((seconds % 3600) / 60);
@@ -20,17 +21,15 @@ export function secondsToHMS(seconds) {
     return `${hoursString}hr : ${minutesString}min : ${secondsString}sec`;
 }
 
+// Convert time (seconds) and distance (meters) to minutes/km (average time to complete a km)
 export function timeAndDistanceToPace(time, distance) {
-    // Convert time to minutes
     let timeInMinutes = time / 60
 
-    // Convert distance to kilometers
     let distanceInKilometers = distance / 1000
 
-    // Calculate minutes per kilometer
     let minutesPerKilometer = timeInMinutes / distanceInKilometers
 
-    // Calculate the seconds
+    // Calculate seconds
     let seconds = Math.floor((minutesPerKilometer - Math.floor(minutesPerKilometer)) * 60)
 
     return `${Math.floor(minutesPerKilometer)}:${seconds.toFixed(0).padStart(2, '0')}min/km`
@@ -41,10 +40,8 @@ export function weeksBetweenDates(date) {
     const inputDate = new Date(date);
     const today = new Date();
 
-    // Calculate the time difference in milliseconds
     const timeDifference = today - inputDate;
 
-    // Convert milliseconds to weeks
     const millisecondsInWeek = 1000 * 60 * 60 * 24 * 7;
     const weeks = Math.floor(timeDifference / millisecondsInWeek);
 
@@ -57,14 +54,15 @@ export function curTimeEpoch() {
     return epochDate
 }
 
+// Get the detailed version of 'activity' parameter and check it for any best efforts (PR times for any distance)
 export async function mayGetBestEffort(activity, detailedBestEfforts, accessToken) {
-    // For each activity, get the detailed, for each best effort in that activity, if it has pr_rank = 1 then save it in bestEfforts under the corresponding distance. Stop when all best efforts have been recorded
     const id = activity.id 
     try {
         const detailedRes = await getStravaDetailedActivity(id, accessToken)
         const detailedActivity = await detailedRes.json()
 
         const effortNames = ["1 mile", "5k", "10k", "Half-Marathon", "Marathon"]
+        // A best effort will have pr_rank = 1 or null and have name = some name in effortNames
         const bestEfforts = detailedActivity.best_efforts.filter((be) => effortNames.includes(be.name) && (be.pr_rank === 1 || be.pr_rank === null))
         bestEfforts.forEach((bestEffort) => {
             const raceType = raceNameConversions[bestEffort.name]
