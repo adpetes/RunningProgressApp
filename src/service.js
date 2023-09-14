@@ -11,7 +11,7 @@ async function makeRequest(address, request) {
 
 async function refreshAndRetryRequest(address, request) {
     try {
-        const tokenRes = getStravaAccessToken()
+        const tokenRes = await getStravaAccessToken()
         const freshToken = await tokenRes.json()
         console.log("Retrying that with fresh token!", address, freshToken)
         const newRequest = {
@@ -74,7 +74,8 @@ export async function getStravaStats(token) {
     } 
     catch (e) { // Try refreshing token and resending request if error
         try {
-            return refreshAndRetryRequest(address, request)
+            const retriedRes = await refreshAndRetryRequest(address, request)
+            return retriedRes
         } catch (e) {
             throw e
         }
@@ -100,7 +101,8 @@ export async function getStravaAllActivites(token) {
     } 
     catch (e) {
         try {
-            return refreshAndRetryRequest(address, request)
+            const retriedRes = await refreshAndRetryRequest(address, request)
+            return retriedRes
         } catch (e2) {
             throw e
         }
@@ -144,7 +146,8 @@ export async function getStravaDetailedActivity(id, token) {
     catch (e) { // Try refreshing token and resending request if error
         try {
             console.log("old token!", token)
-            return refreshAndRetryRequest(address, request)
+            const retriedRes = await refreshAndRetryRequest(address, request)
+            return retriedRes
         } catch (e2) {
             throw e
         }

@@ -12,7 +12,7 @@ function Gallery() {
       <div  className='max-w-[1000px] mx-auto p-4 flex flex-col justify-center w-full h-full'>
         <div className='pb-8'>
           <p className='text-4xl text-white font-bold'>Gallery</p>
-          <p className='text-[#a9abaf] font-bold'>Some photos from this year!</p>
+          <p className='text-[#a9abaf] font-bold mt-2'>Some photos from this year!</p>
         </div>
 
         {/* Grid container */}

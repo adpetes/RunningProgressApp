@@ -7,10 +7,10 @@ const Home = () => {
     <div name='home' className='w-full h-screen bg-[#426a5e]'>
         {/* Container */}
         <div className='max-w-[1000px] mx-auto px-8 flex flex-col justify-center h-full'>
-            <p className='text-white font-bold'>Hi, my name is </p>
+            <p className='text-white font-bold my-2'>Hi, my name is </p>
             <h1 className='text-4xl sm:text-6xl font-bold text-[#f0ebc0]'>Adam Peterson</h1>
             <h2 className='text-4xl sm:text-5xl font-bold text-white'>I'm a New Runner.</h2>
-            <p className='text-[#a9abaf] py-2 max-w-[600px] font-bold'>
+            <p className='text-[#a9abaf] py-2 max-w-[600px] font-bold my-2'>
                 I made this page as a fun project but also to document my running journey - 
                 I started running in February 2023 to train for the BMO half-marathon. 
                 This app uses the Strava API to get some of my running data and display it here.

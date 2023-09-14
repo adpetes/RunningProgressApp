@@ -7,7 +7,7 @@
 @layer base {
     body {
         @apply font-[Raleway];
-        font-family: 'Quicksand', sans-serif !important;
+        font-family: 'Quicksand', sans-serif
     }
     li {
         @apply px-4;

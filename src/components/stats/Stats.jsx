@@ -54,7 +54,7 @@ function Stats(props) {
       <div name='stats' className='bg-[#426a5e] h-screen w-full'>
           <div className='max-w-[1000px] mx-auto p-4'>
               <p className='text-4xl text-white font-bold'>My Stats</p>
-              <p className='text-[#a9abaf] max-w-[700px] font-bold'>Here are some best effort runs and lifetime running stats pulled from my Strava. I have yet to race distances other than the half-marathon. 
+              <p className='text-[#a9abaf] max-w-[700px] font-bold my-2'>Here are some best effort runs and lifetime running stats pulled from my Strava. I have yet to race distances other than the half-marathon. 
                   Many PBs to come!
               </p>
               <div className='w-full grid grid-cols-3 sm:grid-cols-5 gap-3 text-center py-4'>
