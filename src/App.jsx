@@ -64,7 +64,7 @@ function App() {
   const handleModalVisible = () => {if (modalContents) {setModalVisible(true)}}
 
   return (
-    <div>
+    <div className='flex flex-col bg-[rgb(66,106,94)] gap-96'>
       <Navbar />
       <Home />
       <Stats

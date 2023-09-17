@@ -30,7 +30,7 @@ function Schedule(props) {
     }
 
     return (
-      <div name='schedule' className='w-full h-screen text-gray-300 bg-[#426a5e] flex justify-center'>
+      <div name='schedule' className='w-full text-gray-300 flex justify-center'>
         <div className='md:w-[50%] w-full m-4'>
           <p className='text-4xl text-white font-bold'>Schedule</p>
           <p className='text-[#a9abaf] font-bold my-2'>

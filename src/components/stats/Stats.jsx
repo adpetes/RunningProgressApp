@@ -51,7 +51,7 @@ function Stats(props) {
   const getWeeklyMilage = () => athleteStats ? (athleteStats.distance / 1000 / weeksBetweenDates('2023-03-31')).toFixed(2) + "km": "-"
 
   return (
-      <div name='stats' className='bg-[#426a5e] w-full h-screen flex justify-center items-center'>
+      <div name='stats' className='w-full flex justify-center items-center'>
           <div className='md:w-[50%] w-full m-4'>
               <p className='text-4xl text-white font-bold'>Stats</p>
               <p className='text-[#a9abaf] font-bold my-2'>
