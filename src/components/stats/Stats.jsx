@@ -42,7 +42,7 @@ function Stats(props) {
     if (allActivities && Object.keys(bestEfforts).length === 0) {
       getBestEfforts()
     }
-  }, [allActivities, accessToken])
+  }, [allActivities, accessToken, bestEfforts, setAccessToken])
 
   const getDistance = () => athleteStats ? athleteStats.distance / 1000 + "km" : "-"
   const getElevation = () => athleteStats ? athleteStats.elevation_gain + "m" : "-"
@@ -52,7 +52,7 @@ function Stats(props) {
 
   return (
       <div name='stats' className='w-full flex justify-center items-center'>
-          <div className='md:w-[50%] w-full m-4'>
+          <div className='lg:w-[50%] w-full m-4'>
               <p className='text-4xl text-white font-bold'>Stats</p>
               <p className='text-[#a9abaf] font-bold my-2'>
                 Here are my best effort runs (personal records) and lifetime running stats pulled from my Strava; Strava is a fitness social 

@@ -31,7 +31,7 @@ function Schedule(props) {
 
     return (
       <div name='schedule' className='w-full text-gray-300 flex justify-center'>
-        <div className='md:w-[50%] w-full m-4'>
+        <div className='lg:w-[50%] w-full m-4'>
           <p className='text-4xl text-white font-bold'>Schedule</p>
           <p className='text-[#a9abaf] font-bold my-2'>
             A history of all my runs. Click on a day for more details about that workout! I've only recently started being intentional about tracking workout  intensity, 

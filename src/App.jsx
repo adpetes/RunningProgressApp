@@ -58,7 +58,7 @@ function App() {
       getStats()
       getAllActivities()
     }
-  }, [accessToken])
+  }, [accessToken, allActivities, athleteStats])
 
   const handleModalClose = () => setModalVisible(false)
   const handleModalVisible = () => {if (modalContents) {setModalVisible(true)}}
@@ -81,7 +81,7 @@ function App() {
         setAccessToken={setAccessToken}
         allActivities={allActivities}/>
       <Gallery />
-      {modalContents ? <ActivityModal modalVisible={modalVisible} handleModalClose={handleModalClose} contents={modalContents}/> : <></>}
+      {modalContents && <ActivityModal modalVisible={modalVisible} handleModalClose={handleModalClose} contents={modalContents}/>}
     </div>
   );
 }
