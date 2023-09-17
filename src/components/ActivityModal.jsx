@@ -33,9 +33,9 @@ function ActivityModal(props) {
 
     const customStyles = {
         content: {
-          width: '25%', // Adjust this value to make the modal smaller
+          width: '25%',
           minWidth: '350px',
-          height: '65%', // Adjust this value to make the modal shorter
+          height: '68%', 
           margin: 'auto',
           border: '1px solid #ccc',
           borderRadius: '4px',

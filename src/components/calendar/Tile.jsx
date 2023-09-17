@@ -58,7 +58,7 @@ function Tile(props) {
     }
 
     return (
-        <div className='h-[100px] p-2 text-xs' onClick={activity ? handleTileClick : null}>
+        <div className='h-[100px] p-2 sm:text-sm' onClick={activity ? handleTileClick : null}>
             <p className='text-black font-bold my-1' style={{ fontFamily: 'Quicksand, sans-serif' }}>{getDistance()}</p>
             {activity && <p className='font-bold' style={{ fontFamily: 'Quicksand, sans-serif', color: textColour() }}>{getWorkoutType()}</p>}
         </div>

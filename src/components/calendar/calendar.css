@@ -1,13 +1,14 @@
 .react-calendar {
-    width: fit-content
+    width: fit-content;
 }
 
 .react-calendar__tile {
-    height: 100px
+    height: 100px;
+    font-size: 9px;
 }
 
 .react-calendar__tile--active {
-    background: white
+    background: white;
   }
 
 .react-calendar__month-view__days__day {
