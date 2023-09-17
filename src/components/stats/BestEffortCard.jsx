@@ -21,7 +21,7 @@ function BestEffortCard(props) {
             >
                 <span className="mr-2">View</span>
                 <MdOpenInNew />
-            </div> : (raceType === "Marathon" ? <p className='text-gray-500 text-[8px] font-bold'> &zwnj; </p> : <p>...</p>)}
+            </div> : (raceType === "Marathon" ? <p className='text-gray-500 text-[8px] font-bold m-2'> &zwnj; </p> : <p>...</p>)}
             <img className='mx-auto w-[9rem] h-[9rem]' src={race_img} alt="race icon"/>
             <span className='text-gray-500 text-sm font-bold'> <p className='text-black mb-0'>Best Effort: </p> {displayTime()} </span>
         </div>

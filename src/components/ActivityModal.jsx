@@ -64,27 +64,27 @@ function ActivityModal(props) {
                         </MapContainer> : <h1 className='text-center'> No GPS map data available </h1>}
                     </div>
                     <div className='grid grid-cols-2 text-center mt-2'>
-                        <div className='bg-white border-1 border-gray-300 border-spacing-0'>
+                        <div className='bg-white border border-gray-300 border-spacing-0'>
                             <p className='m-0 text-xs'>Distance</p>
                             <p className='m-0 font-bold'>{(contents.distance / 1000).toFixed(2) + "km"}</p>
                         </div>
-                        <div className='bg-white border-1 border-gray-300 border-spacing-0'>
+                        <div className='bg-white border border-gray-300 border-spacing-0'>
                             <p className='m-0 text-xs'>Avg Pace</p>
                             <p className='m-0 font-bold'>{timeAndDistanceToPace(contents.moving_time, contents.distance)}</p>
                         </div>
-                        <div className='bg-white border-1 border-gray-300 border-spacing-0'>
+                        <div className='bg-white border border-gray-300 border-spacing-0'>
                             <p className='m-0 text-xs'>Moving Time</p>
                             <p className='m-0 font-bold'>{secondsToHMS(contents.moving_time)}</p>
                         </div>
-                        <div className='bg-white border-1 border-gray-300 border-spacing-0'>
+                        <div className='bg-white border border-gray-300 border-spacing-0'>
                             <p className='m-0 text-xs'>Elevation Gain</p>
                             <p className='m-0 font-bold'>{contents.total_elevation_gain + "m"}</p>
                         </div>
-                        <div className='bg-white border-1 border-gray-300 border-spacing-0'>
+                        <div className='bg-white border border-gray-300 border-spacing-0'>
                             <p className='m-0 text-xs'>Calories</p>
                             <p className='m-0 font-bold'>{contents.calories}</p>
                         </div>
-                        <div className='bg-white border-1 border-gray-300 border-spacing-0'>
+                        <div className='bg-white border border-gray-300 border-spacing-0'>
                             <p className='m-0 text-xs'>Avg HR</p>
                             <p className='m-0 font-bold'>{contents.average_heartrate ? contents.average_heartrate.toFixed(0) + "bpm" : "-"}</p>
                         </div>

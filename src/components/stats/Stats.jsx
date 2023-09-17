@@ -15,7 +15,7 @@ import BestEffortCard from './BestEffortCard'
 import StatCard from './StatCard'
 
 function Stats(props) {
-  const {athleteStats='?', handleModalVisible, setModalContents, accessToken, allActivities } = props
+  const {athleteStats='?', handleModalVisible, setModalContents, accessToken, setAccessToken, allActivities } = props
   
   const [bestEfforts, setBestEfforts] = useState({})
 
@@ -26,7 +26,7 @@ function Stats(props) {
       const detailedBestEfforts = {}
       try {
         for (const pr of prs) {
-          await mayGetBestEffort(pr, detailedBestEfforts, accessToken)
+          await mayGetBestEffort(pr, detailedBestEfforts, accessToken, setAccessToken)
           if (Object.keys(detailedBestEfforts).length === 4) {
             break
           }
@@ -39,7 +39,7 @@ function Stats(props) {
       }
     }
 
-    if (allActivities) {
+    if (allActivities && Object.keys(bestEfforts).length === 0) {
       getBestEfforts()
     }
   }, [allActivities, accessToken])
@@ -51,13 +51,14 @@ function Stats(props) {
   const getWeeklyMilage = () => athleteStats ? (athleteStats.distance / 1000 / weeksBetweenDates('2023-03-31')).toFixed(2) + "km": "-"
 
   return (
-      <div name='stats' className='bg-[#426a5e] h-screen w-full'>
-          <div className='max-w-[1000px] mx-auto p-4'>
-              <p className='text-4xl text-white font-bold'>My Stats</p>
-              <p className='text-[#a9abaf] max-w-[700px] font-bold my-2'>Here are some best effort runs and lifetime running stats pulled from my Strava. I have yet to race distances other than the half-marathon. 
-                  Many PBs to come!
+      <div name='stats' className='bg-[#426a5e] w-full h-screen flex justify-center items-center'>
+          <div className='md:w-[50%] w-full m-4'>
+              <p className='text-4xl text-white font-bold'>Stats</p>
+              <p className='text-[#a9abaf] font-bold my-2'>
+                Here are my best effort runs (personal records) and lifetime running stats pulled from my Strava; Strava is a fitness social 
+                media application from which I record all my running data (GPS data, heart rate, pace, cadence, and more)!
               </p>
-              <div className='w-full grid grid-cols-3 sm:grid-cols-5 gap-3 text-center py-4'>
+              <div className='w-full grid grid-cols-3 sm:grid-cols-5 gap-3 text-center my-4'>
                 <BestEffortCard handleModalVisible={handleModalVisible} setModalContents={setModalContents} raceType={'Marathon'} raceInfo={bestEfforts.marathon} race_img={marathon}/>
                 <BestEffortCard handleModalVisible={handleModalVisible} setModalContents={setModalContents} raceType={'Half-Marathon'} raceInfo={bestEfforts.halfmara} race_img={halfmara}/>
                 <BestEffortCard handleModalVisible={handleModalVisible} setModalContents={setModalContents} raceType={'10k'} raceInfo={bestEfforts.tenk} race_img={tenk}/>

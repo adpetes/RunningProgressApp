@@ -2,12 +2,12 @@ import React from 'react'
 import { getStravaDetailedActivity } from '../../service'
 
 function Tile(props) {
-    const { activity, date, handleModalVisible, setModalContents, accessToken } = props
+    const { activity, date, handleModalVisible, setModalContents, accessToken, setAccessToken } = props
     
     const handleTileClick = async () => {
         // Get detailed activity associated with clicked tile, display detailed activity in modal
         try {
-            const detailedRes = await getStravaDetailedActivity(activity.id, accessToken)
+            const detailedRes = await getStravaDetailedActivity(activity.id, accessToken, setAccessToken)
             const detailed = await detailedRes.json()
 
             console.log("got detailed activity!", detailed)

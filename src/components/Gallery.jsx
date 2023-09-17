@@ -8,8 +8,8 @@ import marathon_pic_5 from '../images/marathon_pic_5.jpeg'
 
 function Gallery() {
   return (
-    <div name='gallery' className='w-full md:h-screen text-gray-300 bg-[#426a5e]'>
-      <div  className='max-w-[1000px] mx-auto p-4 flex flex-col justify-center w-full h-full'>
+    <div name='gallery' className='w-full h-screen text-gray-300 bg-[#426a5e] flex justify-center items-center'>
+      <div  className='md:w-[50%] w-full m-4'>
         <div className='pb-8'>
           <p className='text-4xl text-white font-bold'>Gallery</p>
           <p className='text-[#a9abaf] font-bold mt-2'>Some photos from this year!</p>

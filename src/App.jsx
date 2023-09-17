@@ -33,7 +33,7 @@ function App() {
   useEffect(() => {
     async function getStats() {
       try {
-        const statsRes = await getStravaStats(accessToken)
+        const statsRes = await getStravaStats(accessToken, setAccessToken)
         const stats = await statsRes.json()
         console.log('stats obtained', stats)
         setAthleteStats(stats.all_run_totals)
@@ -44,7 +44,7 @@ function App() {
     }
     async function getAllActivities() {
       try {
-        const allActivitiesRes = await getStravaAllActivites(accessToken)
+        const allActivitiesRes = await getStravaAllActivites(accessToken, setAccessToken)
         const allActivitiesData = await allActivitiesRes.json()
         console.log('all activities obtained', allActivitiesData)
         setAllActivities(allActivitiesData)
@@ -54,7 +54,7 @@ function App() {
       }
     }
 
-    if (accessToken !== null){
+    if (accessToken !== null && !athleteStats && !allActivities){
       getStats()
       getAllActivities()
     }
@@ -72,11 +72,13 @@ function App() {
         handleModalVisible={handleModalVisible}
         setModalContents={setModalContents}
         accessToken={accessToken}
+        setAccessToken={setAccessToken}
         allActivities={allActivities}/>
       <Schedule 
         handleModalVisible={handleModalVisible}
         setModalContents={setModalContents}
         accessToken={accessToken}
+        setAccessToken={setAccessToken}
         allActivities={allActivities}/>
       <Gallery />
       {modalContents ? <ActivityModal modalVisible={modalVisible} handleModalClose={handleModalClose} contents={modalContents}/> : <></>}

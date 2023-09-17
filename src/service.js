@@ -9,19 +9,21 @@ async function makeRequest(address, request) {
     }
 }
 
-async function refreshAndRetryRequest(address, request) {
+async function refreshAndRetryRequest(address, request, setAccessToken) {
     try {
         const tokenRes = await getStravaAccessToken()
         const freshToken = await tokenRes.json()
-        console.log("Retrying that with fresh token!", address, freshToken)
+        console.log("Retrying that with fresh token!", address)
         const newRequest = {
             ...request, // Spread the properties of the original request 
             headers: {
                 ...request.headers,
-                authorization: `Bearer ${freshToken}` // Replace the token with freshToken
+                authorization: `Bearer ${freshToken.access_token}` // Replace the token with freshToken
             }
         }
         const res = await makeRequest(address, newRequest)
+        if (!res.ok) throw new Error("Error refreshing access token")
+        setAccessToken(freshToken.access_token)
         return res
     } 
     catch (error) {
@@ -57,7 +59,7 @@ export async function getStravaAccessToken() {
     }
 }
 
-export async function getStravaStats(token) {
+export async function getStravaStats(token, setAccessToken) {
     const id = process.env.REACT_APP_STRAVA_ATHLETE_ID
     const address = `https://www.strava.com/api/v3/athletes/${id}/stats`
     let request = {
@@ -74,15 +76,15 @@ export async function getStravaStats(token) {
     } 
     catch (e) { // Try refreshing token and resending request if error
         try {
-            const retriedRes = await refreshAndRetryRequest(address, request)
+            const retriedRes = await refreshAndRetryRequest(address, request, setAccessToken)
             return retriedRes
-        } catch (e) {
+        } catch (e2) {
             throw e
         }
     }
 }
 
-export async function getStravaAllActivites(token) {
+export async function getStravaAllActivites(token, setAccessToken) {
     // TODO update to make multiple requests (one for each page) until request returns no data
     const time = curTimeEpoch()
     const address = `https://www.strava.com/api/v3/athlete/activities?page=1&per_page=200`
@@ -101,7 +103,7 @@ export async function getStravaAllActivites(token) {
     } 
     catch (e) {
         try {
-            const retriedRes = await refreshAndRetryRequest(address, request)
+            const retriedRes = await refreshAndRetryRequest(address, request, setAccessToken)
             return retriedRes
         } catch (e2) {
             throw e
@@ -128,7 +130,7 @@ export async function getStravaAllActivites(token) {
 //     }
 // }
 
-export async function getStravaDetailedActivity(id, token) {
+export async function getStravaDetailedActivity(id, token, setAccessToken) {
     // TODO update to make multiple requests (one for each page) until request returns no data
     const address = `https://www.strava.com/api/v3/activities/${id}?include_all_efforts=false`
     let request = {
@@ -146,7 +148,7 @@ export async function getStravaDetailedActivity(id, token) {
     catch (e) { // Try refreshing token and resending request if error
         try {
             console.log("old token!", token)
-            const retriedRes = await refreshAndRetryRequest(address, request)
+            const retriedRes = await refreshAndRetryRequest(address, request, setAccessToken)
             return retriedRes
         } catch (e2) {
             throw e

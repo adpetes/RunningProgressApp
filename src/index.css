@@ -4,15 +4,13 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Quicksand&display=swap');
 
-@layer base {
-    body {
-        @apply font-[Raleway];
-        font-family: 'Quicksand', sans-serif
-    }
-    li {
-        @apply px-4;
-        @apply cursor-pointer
-    }
+body {
+    font-family: 'Quicksand', sans-serif
+}
+
+li {
+    padding: 12px;
+    cursor: pointer;
 }
 
 .content-div {
