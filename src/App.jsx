@@ -7,6 +7,7 @@ import Schedule from './components/calendar/Schedule';
 import { useEffect, useState } from 'react';
 import { getStravaAccessToken, getStravaAllActivites, getStravaStats } from './service';
 import ActivityModal from './components/ActivityModal';
+import Error from './components/Error';
 
 function App() {
   const [accessToken, setAccessToken] = useState(null)
@@ -14,6 +15,7 @@ function App() {
   const [modalVisible, setModalVisible] = useState(true)
   const [modalContents, setModalContents] = useState(null)
   const [allActivities, setAllActivities] = useState(null)
+  const [error, setError] = useState(null)
 
   useEffect(() => {
     async function fetchToken() {
@@ -23,7 +25,7 @@ function App() {
         setAccessToken(tokenInfo.access_token)
       } 
       catch (error) {
-        console.log(error)
+        setError(error.message)
       }
     }
 
@@ -39,7 +41,7 @@ function App() {
         setAthleteStats(stats.all_run_totals)
       } 
       catch (error) {
-        console.log(error)
+        setError(error.message)
       }
     }
     async function getAllActivities() {
@@ -50,11 +52,11 @@ function App() {
         setAllActivities(allActivitiesData)
       } 
       catch (error) {
-        console.log(error)
+        setError(error.message)
       }
     }
 
-    if (accessToken !== null && !athleteStats && !allActivities){
+    if (accessToken !== null && !athleteStats && !allActivities) {
       getStats()
       getAllActivities()
     }
@@ -64,25 +66,28 @@ function App() {
   const handleModalVisible = () => {if (modalContents) {setModalVisible(true)}}
 
   return (
-    <div className='flex flex-col bg-[rgb(66,106,94)] gap-96'>
-      <Navbar />
-      <Home />
-      <Stats
-        athleteStats={athleteStats} 
-        handleModalVisible={handleModalVisible}
-        setModalContents={setModalContents}
-        accessToken={accessToken}
-        setAccessToken={setAccessToken}
-        allActivities={allActivities}/>
-      <Schedule 
-        handleModalVisible={handleModalVisible}
-        setModalContents={setModalContents}
-        accessToken={accessToken}
-        setAccessToken={setAccessToken}
-        allActivities={allActivities}/>
-      <Gallery />
-      {modalContents && <ActivityModal modalVisible={modalVisible} handleModalClose={handleModalClose} contents={modalContents}/>}
-    </div>
+    !error ?
+      <div className='flex flex-col bg-[rgb(66,106,94)] gap-96'>
+        <Navbar />
+        <Home />
+        <Schedule 
+          handleModalVisible={handleModalVisible}
+          setModalContents={setModalContents}
+          accessToken={accessToken}
+          setAccessToken={setAccessToken}
+          allActivities={allActivities}/>
+        <Stats
+          athleteStats={athleteStats} 
+          handleModalVisible={handleModalVisible}
+          setModalContents={setModalContents}
+          accessToken={accessToken}
+          setAccessToken={setAccessToken}
+          allActivities={allActivities}/>
+        <Gallery />
+        {modalContents && <ActivityModal modalVisible={modalVisible} handleModalClose={handleModalClose} contents={modalContents}/>}
+      </div>
+    :
+      <Error error={error}/>
   );
 }
 

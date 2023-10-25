@@ -57,24 +57,22 @@ export function curTimeEpoch() {
 // Get the detailed version of 'activity' parameter and check it for any best efforts (PR times for any distance)
 export async function mayGetBestEffort(activity, detailedBestEfforts, accessToken) {
     const id = activity.id 
-    try {
-        const detailedRes = await getStravaDetailedActivity(id, accessToken)
-        const detailedActivity = await detailedRes.json()
-
-        const effortNames = ["1 mile", "5k", "10k", "Half-Marathon", "Marathon"]
-        // A best effort will have pr_rank = 1 or null and have name = some name in effortNames
-        const bestEfforts = detailedActivity.best_efforts.filter((be) => effortNames.includes(be.name) && (be.pr_rank === 1 || be.pr_rank === null))
-        bestEfforts.forEach((bestEffort) => {
-            const raceType = raceNameConversions[bestEffort.name]
-            if (bestEffort.name === "Half-Marathon") {
-                detailedBestEfforts[raceType] = detailedActivity
-            }
-            else if (bestEffort.pr_rank === 1 && !(raceType in detailedBestEfforts)){
-                detailedBestEfforts[raceType] = detailedActivity
-            }
-        })
-    } 
-    catch (error) {
-        throw error
+    const detailedRes = await getStravaDetailedActivity(id, accessToken)
+    const detailedActivity = await detailedRes.json()
+    if (!detailedRes.ok) {
+        console.log(detailedActivity)
+        throw new Error('Failed to get detailed activity: ', + id)
     }
+    const effortNames = ["1 mile", "5k", "10k", "Half-Marathon", "Marathon"]
+    // A best effort will have pr_rank = 1 or null and have name = some name in effortNames
+    const bestEfforts = detailedActivity.best_efforts.filter((be) => effortNames.includes(be.name) && (be.pr_rank === 1 || be.pr_rank === null))
+    bestEfforts.forEach((bestEffort) => {
+        const raceType = raceNameConversions[bestEffort.name]
+        if (bestEffort.name === "Half-Marathon") {
+            detailedBestEfforts[raceType] = detailedActivity
+        }
+        else if (bestEffort.pr_rank === 1 && !(raceType in detailedBestEfforts)){
+            detailedBestEfforts[raceType] = detailedActivity
+        }
+    })
 }

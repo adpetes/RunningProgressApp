@@ -1,34 +1,29 @@
 import {curTimeEpoch} from "./util"
 
 async function makeRequest(address, request) {
-    try {
-        const response = await fetch(address, request)
-        return response
-    } catch (error) {
-        throw error
+    const response = await fetch(address, request)
+    if (!response.ok) {
+        const responseJson = await response.json()
+        console.log(responseJson)
+        throw new Error(responseJson.message)
     }
+    return response
 }
 
 async function refreshAndRetryRequest(address, request, setAccessToken) {
-    try {
-        const tokenRes = await getStravaAccessToken()
-        const freshToken = await tokenRes.json()
-        console.log("Retrying that with fresh token!", address)
-        const newRequest = {
-            ...request, // Spread the properties of the original request 
-            headers: {
-                ...request.headers,
-                authorization: `Bearer ${freshToken.access_token}` // Replace the token with freshToken
-            }
+    const tokenRes = await getStravaAccessToken()
+    const freshToken = await tokenRes.json()
+    console.log("Retrying that with fresh token!", address)
+    const newRequest = {
+        ...request, // Spread the properties of the original request 
+        headers: {
+            ...request.headers,
+            authorization: `Bearer ${freshToken.access_token}` // Replace the token with freshToken
         }
-        const res = await makeRequest(address, newRequest)
-        if (!res.ok) throw new Error("Error refreshing access token")
-        setAccessToken(freshToken.access_token)
-        return res
-    } 
-    catch (error) {
-        throw error
     }
+    const res = await makeRequest(address, newRequest)
+    setAccessToken(freshToken.access_token)
+    return res
 }
 
 export async function getStravaAccessToken() {
@@ -43,20 +38,14 @@ export async function getStravaAccessToken() {
         grant_type: 'refresh_token',
     })
 
-    try {
-        const address = 'https://www.strava.com/oauth/token'
-        const request = {
-            method: 'post',
-            "headers": headers,
-            "body": body
-        }
-        const response = await makeRequest(address, request)
-        if (!response.ok) throw new Error("Error retrieving access token")
-        return response
-    } 
-    catch (e) {
-        throw e
+    const address = 'https://www.strava.com/oauth/token'
+    const request = {
+        method: 'post',
+        "headers": headers,
+        "body": body
     }
+    const response = await makeRequest(address, request)
+    return response
 }
 
 export async function getStravaStats(token, setAccessToken) {
@@ -69,19 +58,14 @@ export async function getStravaStats(token, setAccessToken) {
             'authorization': `Bearer ${token}`
         }
     }
-    try {
-        const res = await makeRequest(address, request)
-        if (!res.ok) throw new Error("Error retrieving athlete stats")
-        return res
-    } 
-    catch (e) { // Try refreshing token and resending request if error
-        try {
-            const retriedRes = await refreshAndRetryRequest(address, request, setAccessToken)
-            return retriedRes
-        } catch (e2) {
-            throw e
+    const res = await makeRequest(address, request)
+    if (!res.ok) {
+        const retriedRes = await refreshAndRetryRequest(address, request, setAccessToken)
+        if (retriedRes.ok) {
+            return retriedRes;
         }
     }
+    return res
 }
 
 export async function getStravaAllActivites(token, setAccessToken) {
@@ -96,19 +80,15 @@ export async function getStravaAllActivites(token, setAccessToken) {
             'before' : time
         }
     }
-    try { // Try refreshing token and resending request if error
-        const res = await makeRequest(address, request)
-        if (!res.ok) throw new Error("Error retrieving all activities")
-        return res
-    } 
-    catch (e) {
-        try {
-            const retriedRes = await refreshAndRetryRequest(address, request, setAccessToken)
+    const res = await makeRequest(address, request)
+    if (!res.ok){
+        const retriedRes = await refreshAndRetryRequest(address, request, setAccessToken)
+        if (retriedRes.ok) {
             return retriedRes
-        } catch (e2) {
-            throw e
         }
     }
+    console.log("hi", res)
+    return res
 }
 
 // export async function getStravaAllActivites(token) {
@@ -140,20 +120,14 @@ export async function getStravaDetailedActivity(id, token, setAccessToken) {
             'authorization': `Bearer ${token}`
         }
     }
-    try {
-        const res = await makeRequest(address, request)
-        if (!res.ok) throw new Error(`Error retrieving detailed activity: ${id}`)
-        return res
-    } 
-    catch (e) { // Try refreshing token and resending request if error
-        try {
-            console.log("old token!", token)
-            const retriedRes = await refreshAndRetryRequest(address, request, setAccessToken)
+    const res = await makeRequest(address, request)
+    if (!res.ok){
+        const retriedRes = await refreshAndRetryRequest(address, request, setAccessToken)
+        if (retriedRes.ok) {
             return retriedRes
-        } catch (e2) {
-            throw e
         }
     }
+    return res
 }
 
 // export async function getStravaDetailedActivity(id, token) {
