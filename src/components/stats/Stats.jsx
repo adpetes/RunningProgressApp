@@ -33,9 +33,6 @@ function Stats(props) {
             setError(error)
             return
           }
-          // if (Object.keys(detailedBestEfforts).length === 4) {
-          //   break
-          // }
         }
         console.log('Best efforts: ', detailedBestEfforts)
         setBestEfforts(detailedBestEfforts)
@@ -48,7 +45,7 @@ function Stats(props) {
     if (allActivities && Object.keys(bestEfforts).length === 0) {
       getBestEfforts()
     }
-  }, [allActivities, accessToken, setAccessToken])
+  }, [allActivities, accessToken, bestEfforts, setAccessToken])
 
   const getDistance = () => athleteStats ? athleteStats.distance / 1000 + "km" : "-"
   const getElevation = () => athleteStats ? athleteStats.elevation_gain + "m" : "-"
