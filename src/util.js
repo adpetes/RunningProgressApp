@@ -63,16 +63,21 @@ export async function mayGetBestEffort(activity, detailedBestEfforts, accessToke
         console.log(detailedActivity)
         throw new Error('Failed to get detailed activity: ', + id)
     }
-    const effortNames = ["1 mile", "5k", "10k", "Half-Marathon", "Marathon"]
-    // A best effort will have pr_rank = 1 or null and have name = some name in effortNames
-    const bestEfforts = detailedActivity.best_efforts.filter((be) => effortNames.includes(be.name) && (be.pr_rank === 1 || be.pr_rank === null))
+    const bestEfforts = detailedActivity.best_efforts
     bestEfforts.forEach((bestEffort) => {
-        const raceType = raceNameConversions[bestEffort.name]
-        if (bestEffort.name === "Half-Marathon") {
-            detailedBestEfforts[raceType] = detailedActivity
-        }
-        else if (bestEffort.pr_rank === 1 && !(raceType in detailedBestEfforts)){
-            detailedBestEfforts[raceType] = detailedActivity
+        if (bestEffort.name in raceNameConversions) {
+            const raceType = raceNameConversions[bestEffort.name]
+            if (!(raceType in detailedBestEfforts)) {
+                detailedBestEfforts[raceType] = detailedActivity
+            }
+            else {
+                const curBest = detailedBestEfforts[raceType].best_efforts.filter((be) => be.name === bestEffort.name)
+                if (curBest.length > 0) {
+                    if (bestEffort.moving_time < curBest[0].moving_time) {
+                        detailedBestEfforts[raceType] = detailedActivity
+                    }
+                }
+            }
         }
     })
 }

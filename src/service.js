@@ -87,7 +87,6 @@ export async function getStravaAllActivites(token, setAccessToken) {
             return retriedRes
         }
     }
-    console.log("hi", res)
     return res
 }
 

@@ -23,7 +23,7 @@ function Stats(props) {
   useEffect(() => {
     // Find all "best effort" runs aka personal record times for given distances
     async function getBestEfforts() {
-      const prs = allActivities.filter((activity) => activity.pr_count > 0) // Activities that contain PRs
+      let prs = allActivities.filter((activity) => activity.name.includes("PR")) // Activities that contain PRs
       const detailedBestEfforts = {}
       try {
         for (const pr of prs) {
@@ -33,9 +33,9 @@ function Stats(props) {
             setError(error)
             return
           }
-          if (Object.keys(detailedBestEfforts).length === 4) {
-            break
-          }
+          // if (Object.keys(detailedBestEfforts).length === 4) {
+          //   break
+          // }
         }
         console.log('Best efforts: ', detailedBestEfforts)
         setBestEfforts(detailedBestEfforts)
@@ -48,7 +48,7 @@ function Stats(props) {
     if (allActivities && Object.keys(bestEfforts).length === 0) {
       getBestEfforts()
     }
-  }, [allActivities, accessToken, bestEfforts, setAccessToken])
+  }, [allActivities, accessToken, setAccessToken])
 
   const getDistance = () => athleteStats ? athleteStats.distance / 1000 + "km" : "-"
   const getElevation = () => athleteStats ? athleteStats.elevation_gain + "m" : "-"
@@ -63,7 +63,6 @@ function Stats(props) {
               <p className='text-[#a9abaf] font-bold my-2'>
                 Here are my best effort runs (personal records) and lifetime running stats pulled from my Strava; Strava is a fitness social 
                 media application from which I record all my running data - GPS data, heart rate, pace, cadence, and more! Click 'View' for more details!
-                (This takes a long time to process because Strava provides no way to request best efforts directly. Sorry!)
               </p>
               <div className='w-full grid grid-cols-3 sm:grid-cols-5 gap-3 text-center my-4'>
                 <BestEffortCard handleModalVisible={handleModalVisible} setModalContents={setModalContents} raceType={'Marathon'} raceInfo={bestEfforts.marathon} race_img={marathon}/>
